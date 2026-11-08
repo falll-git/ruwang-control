@@ -1,0 +1,55 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:ruwang-control:review-command:v1",
+  "title": "Ruwang Control review command V1",
+  "description": "Payload keputusan pemeriksaan. Autentikasi transport memakai header Ruwang-Control-V1 yang mengikat method, path, timestamp, nonce, dan SHA-256 canonical JSON payload.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["contract_version", "command_id", "instance_id", "actor_subject", "audience", "resource", "decision", "contributor_subjects", "expected_version", "expected_checksum", "issued_at", "expires_at"],
+  "properties": {
+    "contract_version": { "const": 1 },
+    "command_id": { "type": "string", "format": "uuid" },
+    "instance_id": { "type": "string", "format": "uuid" },
+    "actor_subject": { "type": "string", "pattern": "^ruwang-control:[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$" },
+    "audience": { "type": "string", "minLength": 1, "maxLength": 150 },
+    "resource": {
+      "type": "object", "additionalProperties": false,
+      "required": ["kind", "id"],
+      "properties": { "kind": { "enum": ["publication", "profile", "contact", "change_request"] }, "id": { "type": "string", "format": "uuid" } }
+    },
+    "decision": { "enum": ["approve", "request_revision", "reject"] },
+    "contributor_subjects": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 20,
+      "uniqueItems": true,
+      "items": { "type": "string", "pattern": "^[a-z0-9][a-z0-9_-]{1,39}:[^\\r\\n]{1,180}$" }
+    },
+    "reason": { "type": "string", "maxLength": 2000 },
+    "expected_version": { "type": "integer", "minimum": 0 },
+    "expected_checksum": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+    "issued_at": { "type": "string", "format": "date-time" },
+    "expires_at": { "type": "string", "format": "date-time" }
+  },
+  "allOf": [
+    {
+      "if": { "properties": { "decision": { "const": "request_revision" } }, "required": ["decision"] },
+      "then": { "required": ["reason"], "properties": { "reason": { "type": "string", "pattern": "\\S", "maxLength": 2000 } } }
+    },
+    {
+      "if": {
+        "properties": {
+          "resource": { "properties": { "kind": { "const": "change_request" } }, "required": ["kind"] }
+        },
+        "required": ["resource"]
+      },
+      "then": { "required": ["reason"], "properties": { "reason": { "type": "string", "pattern": "\\S", "maxLength": 2000 } } },
+      "else": {
+        "allOf": [
+          { "if": { "properties": { "decision": { "const": "approve" } }, "required": ["decision"] }, "then": { "not": { "required": ["reason"] } } },
+          { "not": { "properties": { "decision": { "const": "reject" } }, "required": ["decision"] } }
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ruwang-control.local/contracts/review-snapshot.schema.json",
+  "title": "Ruwang Control private review snapshot V1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["contract_version", "snapshot_id", "instance_id", "resource", "source_version", "payload_checksum", "state", "contributor_subjects", "submitted_at", "detail"],
+  "properties": {
+    "contract_version": { "const": 1 },
+    "snapshot_id": { "type": "string", "format": "uuid" },
+    "instance_id": { "type": "string", "format": "uuid" },
+    "resource": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "id"],
+      "properties": {
+        "kind": { "enum": ["publication", "profile", "contact", "change_request"] },
+        "id": { "type": "string", "format": "uuid" }
+      }
+    },
+    "source_version": { "type": "integer", "minimum": 1 },
+    "payload_checksum": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+    "state": { "const": "IN_REVIEW" },
+    "contributor_subjects": { "type": "array", "minItems": 1, "maxItems": 20, "uniqueItems": true, "items": { "type": "string", "pattern": "^[a-z0-9][a-z0-9_-]{1,39}:[^\\r\\n]{1,180}$" } },
+    "submitted_at": { "type": "string", "format": "date-time" },
+    "detail": { "type": "object" }
+  }
+}

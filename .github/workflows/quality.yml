@@ -1,0 +1,156 @@
+name: Control release quality
+
+on:
+  workflow_dispatch:
+    inputs:
+      backend_ref:
+        description: Ruwang Arsip backend candidate commit SHA (40 hex)
+        required: true
+        type: string
+      frontend_ref:
+        description: Ruwang Arsip frontend candidate commit SHA (40 hex)
+        required: true
+        type: string
+      central_ref:
+        description: Seputar Jaminan candidate commit SHA (40 hex)
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  quality:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 85
+    env:
+      CONTROL_REF: ${{ github.sha }}
+      BACKEND_REF: ${{ inputs.backend_ref }}
+      FRONTEND_REF: ${{ inputs.frontend_ref }}
+      CENTRAL_REF: ${{ inputs.central_ref }}
+      NEXT_TELEMETRY_DISABLED: "1"
+    steps:
+      - name: Require exact candidate commits
+        shell: bash
+        run: |
+          set -euo pipefail
+          for ref in "$CONTROL_REF" "$BACKEND_REF" "$FRONTEND_REF" "$CENTRAL_REF"; do
+            [[ "$ref" =~ ^[a-fA-F0-9]{40}$ ]] || { echo 'Expected four commit SHAs'; exit 1; }
+          done
+
+      - name: Checkout Control candidate
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
+        with:
+          ref: ${{ github.sha }}
+          path: ruwang-control
+          persist-credentials: false
+
+      - name: Checkout backend candidate
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
+        with:
+          repository: falll-git/backend-production
+          ref: ${{ inputs.backend_ref }}
+          path: backend-production
+          token: ${{ secrets.CONTROL_CI_PEERS_READ_TOKEN || github.token }}
+          persist-credentials: false
+
+      - name: Checkout frontend candidate
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
+        with:
+          repository: falll-git/frontend-production
+          ref: ${{ inputs.frontend_ref }}
+          path: frontend-production
+          token: ${{ secrets.CONTROL_CI_PEERS_READ_TOKEN || github.token }}
+          persist-credentials: false
+
+      - name: Checkout SJ candidate
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
+        with:
+          repository: falll-git/seputarjaminan
+          ref: ${{ inputs.central_ref }}
+          path: seputarjaminan-production
+          token: ${{ secrets.CONTROL_CI_PEERS_READ_TOKEN || github.token }}
+          persist-credentials: false
+
+      - name: Verify checked-out commits
+        shell: bash
+        run: |
+          set -euo pipefail
+          verify_ref() {
+            local actual
+            actual=$(git -C "$1" rev-parse --verify HEAD)
+            [[ "$actual" == "${2,,}" ]]
+            printf '%s %s\n' "$1" "$actual"
+          }
+          verify_ref ruwang-control "$CONTROL_REF"
+          verify_ref backend-production "$BACKEND_REF"
+          verify_ref frontend-production "$FRONTEND_REF"
+          verify_ref seputarjaminan-production "$CENTRAL_REF"
+
+      - name: Set up Node.js
+        uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38
+        with:
+          node-version: 24.13.0
+
+      - name: Prepare verified npm 11.21.0
+        shell: bash
+        run: |
+          set -euo pipefail
+          toolchain=$(mktemp -d "$RUNNER_TEMP/control-npm.XXXXXXXX")
+          curl --fail --silent --show-error --max-time 60 \
+            https://registry.npmjs.org/npm/-/npm-11.21.0.tgz -o "$toolchain/npm.tgz"
+          printf '%s  %s\n' '783e7c92bf73b442fb800c2d6ef3921e86da8894a700fed45140e37916877482' \
+            "$toolchain/npm.tgz" | sha256sum --check --status
+          tar -xzf "$toolchain/npm.tgz" -C "$toolchain"
+          mkdir "$toolchain/bin"
+          printf '#!/usr/bin/env bash\nexec node "%s" "$@"\n' \
+            "$toolchain/package/bin/npm-cli.js" > "$toolchain/bin/npm"
+          chmod 700 "$toolchain/bin/npm"
+          test "$("$toolchain/bin/npm" --version)" = 11.21.0
+          printf '%s\n' "$toolchain/bin" >> "$GITHUB_PATH"
+
+      - name: Install locked dependencies and generate Prisma clients
+        shell: bash
+        env:
+          DATABASE_URL: postgresql://generate:generate@127.0.0.1:1/generate_only
+        run: |
+          set -euo pipefail
+          test "$(npm --version)" = 11.21.0
+          (
+            cd frontend-production
+            node scripts/verify-package-policy.mjs
+            node scripts/verify-dependency-age.mjs
+            npm ci
+          )
+          for repo in ruwang-control backend-production seputarjaminan-production; do
+            npm ci --prefix "$repo"
+          done
+          npm --prefix backend-production run prisma:generate
+
+      - name: Check Control lint, types, dependency and build
+        working-directory: ruwang-control
+        shell: bash
+        run: |
+          set -euo pipefail
+          node scripts/verify-braces-fork.cjs
+          npm run lint
+          node node_modules/next/dist/bin/next typegen
+          npm run typecheck
+          npm run build
+
+      - name: Prepare images for the existing owned fixture harness
+        shell: bash
+        run: |
+          set -euo pipefail
+          pull_fixture() {
+            docker pull "$1"
+            docker tag "$1" "$2"
+          }
+          pull_fixture postgres@sha256:18cfe3ef5e6815560c98237d6216d1e5119702fb0f3894c8785dd58b8bbe5d73 postgres:17-alpine
+          pull_fixture redis@sha256:ff02b58f971e7d7d156a1267e283fcbbeee91773b6aa36c49dac28ecfe28eadf redis:7.4.11-alpine
+          docker pull clamav/clamav@sha256:9cb27d7660bdf66e9878c832cb433dd8aa152cfbe16f3c2c0084c80b04ae22b4
+
+      - name: Run all Control tests including the two mandatory peer workflows
+        working-directory: ruwang-control
+        shell: bash
+        run: node --test --test-concurrency=1 tests/*.test.mjs

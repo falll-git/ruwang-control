@@ -1,0 +1,227 @@
+{
+  "inspectedAt": "2026-09-10T17:51:59.578Z",
+  "scope": "local source only; no VPS verification",
+  "repositories": [
+    {
+      "path": "D:/backend-production",
+      "head": "013d8c7e1f3f4b7c58aaba44e56b98b6619f1dbe",
+      "status": "M .env.example\n M prisma/schema.prisma\n M scripts/verify-migration-upgrade-paths.js\n M scripts/verify-migration-upgrade-paths.test.js\n M src/config/env.js\n M src/modules/seputar-jaminan/profileContact.service.js\n M src/modules/seputar-jaminan/seputarJaminan.service.js\n M src/modules/seputar-jaminan/syncWorker.service.js\n M src/modules/seputar-jaminan/syncWorker.test.js\n M src/routes/api-v1.router.js\n M src/system/seputar-jaminan-migration.test.js\n M src/system/worker-heartbeat.js\n M src/workers/seputar-jaminan.worker.js\n?? prisma/migrations/20260910100000_add_ruwang_control_review_adapter/\n?? prisma/migrations/20260910123000_allow_control_review_snapshot_outbox_event/\n?? src/integration/control-review-adapter.workflow.test.js\n?? src/modules/seputar-jaminan/controlMonitoring.contract.js\n?? src/modules/seputar-jaminan/controlMonitoring.contract.test.js\n?? src/modules/seputar-jaminan/controlMonitoring.controller.js\n?? src/modules/seputar-jaminan/controlMonitoring.route.js\n?? src/modules/seputar-jaminan/controlMonitoring.service.js\n?? src/modules/seputar-jaminan/controlMonitoring.service.test.js\n?? src/modules/seputar-jaminan/controlReview.contract.js\n?? src/modules/seputar-jaminan/controlReview.contract.test.js\n?? src/modules/seputar-jaminan/controlReview.controller.js\n?? src/modules/seputar-jaminan/controlReview.route.js\n?? src/modules/seputar-jaminan/controlReview.service.js\n?? src/modules/seputar-jaminan/controlReviewSnapshot.service.js\n?? src/modules/seputar-jaminan/controlReviewSnapshot.service.test.js",
+      "files": [
+        {
+          "path": ".env.example",
+          "sha256": "f103e9292504a7416923de1e526df7b74a1df5f4c1d7100096a55afbca038d56"
+        },
+        {
+          "path": "prisma/schema.prisma",
+          "sha256": "a311f65459067a26bcd374ef9dd6dc79328e524925e3bf95facc72106896ac89"
+        },
+        {
+          "path": "prisma/migrations/20260910100000_add_ruwang_control_review_adapter/migration.sql",
+          "sha256": "c71f4755493a24e60e90b21013c105f90e9e03967cdc19eb409722fd86ccabb9"
+        },
+        {
+          "path": "prisma/migrations/20260910123000_allow_control_review_snapshot_outbox_event/migration.sql",
+          "sha256": "274d7ea06ce033622bd5295b3b5d8e2dd8d34200d131a91527a53492bdc0c154"
+        },
+        {
+          "path": "scripts/verify-migration-upgrade-paths.js",
+          "sha256": "fc5e998a8b95708eb37935583f337d3afcf09474aab1bacc24c2c29be667cd8d"
+        },
+        {
+          "path": "scripts/verify-migration-upgrade-paths.test.js",
+          "sha256": "183c85b6d53eaf3dd7194548f775a236c51806965652a9ef2f969432253836be"
+        },
+        {
+          "path": "src/config/env.js",
+          "sha256": "2aeebcba08a936e804ecedb364b06cb10d38b51862554812b0a346f834df5ded"
+        },
+        {
+          "path": "src/integration/control-review-adapter.workflow.test.js",
+          "sha256": "ecc64480f7a4b34437dc68c5eaebc1b4c2d6967e49fda302b41f5fc9d15e1ab1"
+        },
+        {
+          "path": "src/modules/seputar-jaminan/controlReview.contract.js",
+          "sha256": "171489a9d24311c8402d86f5d2019791fac0a57efdbd266e9dec88afc8eba884"
+        },
+        {
+          "path": "src/modules/seputar-jaminan/controlReview.contract.test.js",
+          "sha256": "a6a6a08f9c572fdd43df47c0929d05017b8d203d67a29eaa597c86a17e134e96"
+        },
+        {
+          "path": "src/modules/seputar-jaminan/controlReview.controller.js",
+          "sha256": "af0b07118dc9e5fbad6ec2f5921e4057d0d9f37fcb906ed423b9cc8457d24806"
+        },
+        {
+          "path": "src/modules/seputar-jaminan/controlReview.route.js",
+          "sha256": "24aacfc0fde26677d8ccd99a40357c9ac99c6908bf8863687ce27134da616bcb"
+        },
+        {
+          "path": "src/modules/seputar-jaminan/controlReview.service.js",
+          "sha256": "d4f7655f6dfcf8df41e701323e75b56df295d5958045162988fa4af61aeeca4e"
+        },
+        {
+          "path": "src/modules/seputar-jaminan/controlMonitoring.contract.js",
+          "sha256": "c783fa8a44d4e5bbfeb9c688475959a2cce1f90f6b3b4f6c108b80cf99de905d"
+        },
+        {
+          "path": "src/modules/seputar-jaminan/controlMonitoring.contract.test.js",
+          "sha256": "f7968153313c0409c267c154df471376390cce46fa8a83c2b8ccd1d2b2e49f29"
+        },
+        {
+          "path": "src/modules/seputar-jaminan/controlMonitoring.controller.js",
+          "sha256": "b0735bde905fde4d53f7c439db95cb42eac2dd33b77ea257a1a6db36fb8fe31c"
+        },
+        {
+          "path": "src/modules/seputar-jaminan/controlMonitoring.route.js",
+          "sha256": "ed3ebe6030dc1a43a36497affb6e322733d26f8b10fae5b54cca1717fb1e1de0"
+        },
+        {
+          "path": "src/modules/seputar-jaminan/controlMonitoring.service.js",
+          "sha256": "f1ac233873eb6e67c68cfcc70b118d5a0338d7f42417ee7c46891123a6d840f0"
+        },
+        {
+          "path": "src/modules/seputar-jaminan/controlMonitoring.service.test.js",
+          "sha256": "41626d0b8d257ed4a536661eac134ea5f8a8d87bf5348a7ff4d10cdea89aa02d"
+        },
+        {
+          "path": "src/modules/seputar-jaminan/profileContact.service.js",
+          "sha256": "a2e478f9049cf52e289522833a3ce6b231b09832f62dbc3e97c6a403251aabfc"
+        },
+        {
+          "path": "src/modules/seputar-jaminan/seputarJaminan.service.js",
+          "sha256": "8f2ce64632474eae2a8a32ccab96c035e5bf0e2e542ba9a322df4f263a77a059"
+        },
+        {
+          "path": "src/modules/seputar-jaminan/syncWorker.service.js",
+          "sha256": "7f73b05ed687e8f9a4ddb566b997122cc77f9395b6e1c2c828a3b4a850c01bd7"
+        },
+        {
+          "path": "src/modules/seputar-jaminan/syncWorker.test.js",
+          "sha256": "096295caa93924a6f2a8b63cbffacc87213c14acbe1bb07326b1868f2e9ff538"
+        },
+        {
+          "path": "src/modules/seputar-jaminan/controlReviewSnapshot.service.js",
+          "sha256": "1ab247603ad893a42184431c65f5dd6a8ea6362601d439c1a2e76d02de708846"
+        },
+        {
+          "path": "src/modules/seputar-jaminan/controlReviewSnapshot.service.test.js",
+          "sha256": "376fa6739f672860000cbbec0f7e77ded3c46102c711d4bb14dfb05a0f7190ec"
+        },
+        {
+          "path": "src/routes/api-v1.router.js",
+          "sha256": "6f6e05f460d0884cc7f2a7fdca19e7fc2abb94277d735e5cf19932e497ba5500"
+        },
+        {
+          "path": "src/system/seputar-jaminan-migration.test.js",
+          "sha256": "74773ea033a2a2d9069e4d94bd4cb81f6822c547b73a887293c7f4b06594bbe3"
+        },
+        {
+          "path": "src/system/worker-heartbeat.js",
+          "sha256": "b2d8f83206382d494d82a69adfcc5e337eaa65e502352db25e4401cd8455698b"
+        },
+        {
+          "path": "src/workers/seputar-jaminan.worker.js",
+          "sha256": "6bd649580842162261d5295b36477f0d359d26add0e0cb805b03a9b91985d5d6"
+        }
+      ]
+    },
+    {
+      "path": "D:/frontend-production",
+      "head": "70d8eda39b59b0a9cfdfe95283c751b881c7e384",
+      "status": "M src/components/seputar-jaminan/SeputarJaminanReviewClient.test.tsx\n M src/components/seputar-jaminan/SeputarJaminanReviewClient.tsx\n M src/types/seputar-jaminan.types.ts",
+      "files": [
+        {
+          "path": "src/components/seputar-jaminan/SeputarJaminanReviewClient.test.tsx",
+          "sha256": "a204347b4334e7e4249c6c27d4978b21218364afb94f45796f370cd86b3cfc29"
+        },
+        {
+          "path": "src/components/seputar-jaminan/SeputarJaminanReviewClient.tsx",
+          "sha256": "484ba98b95aa9d10920110304a95d7156d5dbba8653730dd2c64efa236d6aa34"
+        },
+        {
+          "path": "src/components/seputar-jaminan/SeputarJaminanProfileContactClient.tsx",
+          "sha256": "3c41994864e5768396279c228a7b1565807f02eefa9f83313b670f1230c35487"
+        },
+        {
+          "path": "src/types/seputar-jaminan.types.ts",
+          "sha256": "25666f186e362bff66bf1544bb1069e54e53bbb76147f7f6b20194a404528866"
+        }
+      ]
+    },
+    {
+      "path": "D:/seputarjaminan-production",
+      "head": "32fc3156488c08d78e51b877ed4c67afe030d422",
+      "status": "M apps/api/.env.example\n M apps/api/src/app.ts\n M apps/api/src/server.ts\n M apps/worker/.env.example\n M apps/worker/package.json\n M apps/worker/src/server.ts\n M next-env.d.ts\n M package-lock.json\n M packages/config/src/server.d.ts\n M packages/config/src/server.mjs\n M packages/config/tests/server.test.mjs\n?? AGENTS.md\n?? CLAUDE.md\n?? apps/api/src/control-monitoring.ts\n?? apps/api/src/monitoring-runtime.ts\n?? apps/api/tests/unit/control-monitoring.test.ts\n?? apps/worker/src/heartbeat.ts\n?? apps/worker/tests/unit/heartbeat.test.ts",
+      "files": [
+        {
+          "path": "apps/api/.env.example",
+          "sha256": "ef1289d3449debffae8c0e57c4bf02d8c09340fb2a0eb5f8561ee084ee4501d2"
+        },
+        {
+          "path": "apps/api/src/app.ts",
+          "sha256": "c3f407649261a310afb356e61d5483f31c3a3992688933fab880004743b92bcd"
+        },
+        {
+          "path": "apps/api/src/control-monitoring.ts",
+          "sha256": "29526dc08eb7ba0f673ee919e3c7bd7dd429ac1a74ed6f451a6ee76b2c08a7b7"
+        },
+        {
+          "path": "apps/api/src/monitoring-runtime.ts",
+          "sha256": "228d75a0800a833f52470e936b2aacb1b9fcc3ae79498163f2df94d726eb912b"
+        },
+        {
+          "path": "apps/api/src/server.ts",
+          "sha256": "bd34353954aa15fca7492147a8725038f11f4853e1e6cd49a9a5afa8253d07a9"
+        },
+        {
+          "path": "apps/api/tests/unit/control-monitoring.test.ts",
+          "sha256": "251ad77b73dad5f4ee31127d3b27d46ef5be7d1996fb03caf8aa4cc92ee36207"
+        },
+        {
+          "path": "apps/worker/.env.example",
+          "sha256": "e7bb4700001b8e3a17d4078bb2d5593a45cd5752d1eabd92b49acc50280945be"
+        },
+        {
+          "path": "apps/worker/package.json",
+          "sha256": "2a0c531dab03483e3928b0c14cf1fd6873c2fc0ca8f8af5c5f35e9e250fc398d"
+        },
+        {
+          "path": "apps/worker/src/heartbeat.ts",
+          "sha256": "5311222b0629335a3ab05af035bcbb15df9791bb7bd9451bc79cbf31b29ad488"
+        },
+        {
+          "path": "apps/worker/src/server.ts",
+          "sha256": "47e02c0f04736aab43ca3b3a92abc368e6ec460e8ebdbdedb457be4166e77184"
+        },
+        {
+          "path": "apps/worker/tests/unit/heartbeat.test.ts",
+          "sha256": "ca53d0c02128ffd9c5a4f7fb084d98e7d86c131a0336175e3d38a67840a6ddef"
+        },
+        {
+          "path": "package-lock.json",
+          "sha256": "4b15e73aca9bf66f6a9a3beca8b8ab0cb46fcb34633984ed225501f37f6e4377"
+        },
+        {
+          "path": "packages/config/src/server.d.ts",
+          "sha256": "82fe7a7026ef91525630ecfad95fe31839c3ada9af4bd5936cf86f8de3c794a4"
+        },
+        {
+          "path": "packages/config/src/server.mjs",
+          "sha256": "b547afd71dff7bb12e17ec516bccd11d592172b7a456037cb5a45168fe9f9da3"
+        },
+        {
+          "path": "packages/config/tests/server.test.mjs",
+          "sha256": "8e54b355f6a045c663850b0abb824ae37cb065aa4825badf2e7dd999baec597d"
+        },
+        {
+          "path": "packages/contracts/openapi/openapi.v1.yaml",
+          "sha256": "29a17d918ad3c90678393441440d70ff5a7ba4038babed82baaf9700a318fad7"
+        },
+        {
+          "path": "prisma/schema.prisma",
+          "sha256": "5b5c99b64290cb16ba640d53e15922f859ea7878836e6f0052afd6e98d255e42"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+node_modules/
+.next/
+/dist/
+.control-postgres/
+.control-runtime/
+.env
+.env.*
+!.env.example
+coverage/
+test-results/
+*.log

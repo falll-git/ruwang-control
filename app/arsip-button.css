@@ -1,0 +1,119 @@
+/* Source: Arsip uiverse-modal-button.css; Control palette only. */
+.uiverse-modal-button {
+  --modal-button-color: var(--color-foreground);
+  --modal-button-border: rgba(0, 113, 127, 0.42);
+  --modal-button-hover-border: rgba(0, 113, 127, 0.66);
+  --modal-button-fill: rgba(0, 113, 127, 0.06);
+
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  overflow: hidden;
+  min-height: 44px;
+  padding: 9px 16px;
+  text-align: center;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0;
+  line-height: 1;
+  text-decoration: none;
+  color: var(--modal-button-color);
+  background: #ffffff;
+  cursor: pointer;
+  transition:
+    background-color 0.16s ease,
+    border-color 0.16s ease,
+    color 0.16s ease,
+    transform 0.16s ease,
+    box-shadow 0.16s ease,
+    opacity 0.16s ease;
+  border: 1px solid var(--modal-button-border);
+  border-radius: 8px;
+  box-shadow: none;
+}
+
+.uiverse-modal-button svg,
+.uiverse-modal-button span,
+.uiverse-modal-button .button-spinner {
+  position: relative;
+  z-index: 1;
+}
+
+.uiverse-modal-button span {
+  white-space: nowrap;
+}
+
+.uiverse-modal-button svg {
+  flex: 0 0 auto;
+}
+
+.uiverse-modal-button:hover:not(:disabled) {
+  border-color: var(--modal-button-hover-border);
+  background-color: var(--modal-button-fill);
+}
+
+.uiverse-modal-button:active:not(:disabled) {
+  transform: translateY(1px);
+}
+
+.uiverse-modal-button:focus-visible {
+  outline: none;
+  box-shadow:
+    0 0 0 4px rgba(0, 113, 127, 0.16);
+}
+
+.uiverse-modal-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+  box-shadow: none;
+}
+
+.uiverse-modal-button--neutral {
+  --modal-button-color: var(--color-foreground);
+  --modal-button-border: rgba(0, 113, 127, 0.42);
+  --modal-button-hover-border: rgba(0, 113, 127, 0.65);
+  --modal-button-fill: rgba(0, 113, 127, 0.06);
+}
+
+.uiverse-modal-button--primary {
+  --modal-button-color: #ffffff;
+  --modal-button-border: var(--color-primary-hover);
+  --modal-button-hover-border: #005965;
+  --modal-button-fill: #005965;
+
+  background: var(--color-primary-hover);
+}
+
+.uiverse-modal-button--danger {
+  --modal-button-color: #dc2626;
+  --modal-button-border: rgba(220, 38, 38, 0.55);
+  --modal-button-hover-border: rgba(220, 38, 38, 0.75);
+  --modal-button-fill: rgba(220, 38, 38, 0.08);
+}
+
+.uiverse-modal-button--success {
+  --modal-button-color: #047857;
+  --modal-button-border: rgba(4, 120, 87, 0.55);
+  --modal-button-hover-border: rgba(4, 120, 87, 0.75);
+  --modal-button-fill: rgba(4, 120, 87, 0.08);
+}
+
+.uiverse-modal-button--icon {
+  width: 44px;
+  height: 44px;
+  min-height: 44px;
+  padding: 0;
+  gap: 0;
+}
+
+.uiverse-modal-button__spinner {
+  --spinner-track: rgba(0, 113, 127, 0.18);
+  --spinner-head: var(--color-primary-hover);
+}
+
+.uiverse-modal-button:hover:not(:disabled) .uiverse-modal-button__spinner {
+  --spinner-track: rgba(0, 113, 127, 0.18);
+  --spinner-head: var(--color-primary-hover);
+}

@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:ruwang-control:review-ack:v1",
+  "title": "Ruwang bank review acknowledgment V1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["contract_version", "acknowledgment_id", "command_id", "command_digest", "instance_id", "resource", "status", "result_code", "observed_version", "observed_checksum", "processed_at"],
+  "properties": {
+    "contract_version": { "const": 1 },
+    "acknowledgment_id": { "type": "string", "format": "uuid" },
+    "command_id": { "type": "string", "format": "uuid" },
+    "command_digest": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+    "instance_id": { "type": "string", "format": "uuid" },
+    "resource": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "id"],
+      "properties": {
+        "kind": { "enum": ["publication", "profile", "contact", "change_request"] },
+        "id": { "type": "string", "format": "uuid" }
+      }
+    },
+    "status": { "enum": ["APPLIED", "REJECTED"] },
+    "result_code": { "type": "string", "pattern": "^[A-Z][A-Z0-9_]{1,79}$" },
+    "observed_version": { "type": "integer", "minimum": 0 },
+    "observed_checksum": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+    "processed_at": { "type": "string", "format": "date-time" }
+  }
+}

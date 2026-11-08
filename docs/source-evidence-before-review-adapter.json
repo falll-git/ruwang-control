@@ -1,0 +1,37 @@
+{
+  "inspectedAt": "2026-09-09T20:19:11.594Z",
+  "scope": "local source only; before Control review adapter; no VPS verification",
+  "repositories": [
+    {
+      "path": "D:/backend-production",
+      "head": "013d8c7e1f3f4b7c58aaba44e56b98b6619f1dbe",
+      "status": "",
+      "files": [
+        { "path": "src/modules/seputar-jaminan/seputarJaminan.route.js", "sha256": "de2e8b80a63549c1f00842e9471eb4e358cad52460260c8bd466d930b532e087" },
+        { "path": "src/modules/seputar-jaminan/seputarJaminan.service.js", "sha256": "98d56335c0ae6c4e1142467ac55939fc0b7dc03e7e7e210a813328502e852379" },
+        { "path": "src/modules/seputar-jaminan/profileContact.service.js", "sha256": "6b5c29457e33393401f7f80b5bc4c767954b81e038c180e951c41ee26f86cd88" },
+        { "path": "prisma/seed/seputar-jaminan-rbac.definition.js", "sha256": "cec4df5e5e51093efc01549960966ebba42c0d4c14cc90939fa669be09704e45" },
+        { "path": "src/modules/user/user.route.js", "sha256": "48d1ece3f6053638c413cd0dc3f2e23a6ae8043dd65504f4e8131ed4ebf3181d" },
+        { "path": "src/modules/user/user.service.js", "sha256": "bd3e0d3e54b7aa5b7c846065c99270dba204d368ffd428f7533efac53e6fb8b1" }
+      ]
+    },
+    {
+      "path": "D:/frontend-production",
+      "head": "70d8eda39b59b0a9cfdfe95283c751b881c7e384",
+      "status": "",
+      "files": [
+        { "path": "src/components/seputar-jaminan/SeputarJaminanReviewClient.tsx", "sha256": "e63688eb1f3e0383e3e1460208d397ec66865797d32f99d579e2825faed6bdde" },
+        { "path": "src/components/seputar-jaminan/SeputarJaminanProfileContactClient.tsx", "sha256": "3c41994864e5768396279c228a7b1565807f02eefa9f83313b670f1230c35487" }
+      ]
+    },
+    {
+      "path": "D:/seputarjaminan-production",
+      "head": "32fc3156488c08d78e51b877ed4c67afe030d422",
+      "status": "",
+      "files": [
+        { "path": "packages/contracts/openapi/openapi.v1.yaml", "sha256": "29a17d918ad3c90678393441440d70ff5a7ba4038babed82baaf9700a318fad7" },
+        { "path": "prisma/schema.prisma", "sha256": "5b5c99b64290cb16ba640d53e15922f859ea7878836e6f0052afd6e98d255e42" }
+      ]
+    }
+  ]
+}
