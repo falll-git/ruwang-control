@@ -1,29 +1,13 @@
+import { requestLoopback, waitForLoopbackHealth } from "./runtime-smoke-http.mjs";
+
 // Read-only checks against the already-verified single preview. Never starts another port.
 if (process.argv.length !== 3 || process.argv[2] !== "--existing-preview") {
   throw new Error("Verifikasi preview kandidat di http://127.0.0.1:4320 dahulu, lalu jalankan dengan --existing-preview. Tidak ada layanan dinyalakan oleh tes ini.");
 }
-const base = "http://127.0.0.1:4320";
-
-async function waitUntilReady() {
-  const deadline = Date.now() + 15_000;
-  while (Date.now() < deadline) {
-    try {
-      const response = await fetch(`${base}/api/health`);
-      if (response.ok) return;
-    } catch { /* Runtime belum listen. */ }
-    await new Promise(resolvePromise => setTimeout(resolvePromise, 100));
-  }
-  throw new Error("Runtime tidak siap dalam 15 detik.");
-}
-
-async function request(path) {
-    const response = await fetch(base + path, { redirect: "manual", signal: AbortSignal.timeout(5000) });
-  const text = await response.text();
-  return { response, text };
-}
+const request = path => requestLoopback(path);
 
 try {
-  await waitUntilReady();
+  await waitForLoopbackHealth();
   const health = await request("/api/health");
   const readiness = await request("/api/readiness");
   const dashboard = await request("/api/dashboard");

@@ -46,13 +46,16 @@
     "@types/react": "19.3.0",
     "@types/react-dom": "19.3.0",
     "eslint": "9.39.5",
-    "eslint-config-next": "16.3.8",
+    "eslint-config-next": "16.4.1",
     "tailwindcss": "4.3.3",
     "typescript": "5.9.3"
   },
   "overrides": {
     "braces": "$braces",
-    "source-map-js": "1.2.2"
+    "source-map-js": "1.2.2",
+    "@typescript-eslint/typescript-estree": {
+      "minimatch": "11.0.4"
+    }
   },
   "dependencies": {
     "@fontsource-variable/inter": "5.3.0",
@@ -60,12 +63,12 @@
     "class-variance-authority": "0.7.1",
     "clsx": "2.1.1",
     "lucide-react": "1.43.0",
-    "next": "16.3.8",
+    "next": "16.4.1",
     "pg": "8.23.0",
     "react": "19.3.0",
     "react-dom": "19.3.0",
     "sharp": "0.35.5",
     "tailwind-merge": "3.6.0",
-    "zod": "4.6.0"
+    "zod": "4.6.7"
   }
 }

@@ -24,13 +24,13 @@ export default async function DashboardPage() {
     {!state.ready ? <section className="notice notice-error" aria-labelledby="setup-title"><CircleAlert aria-hidden="true" size={22}/><div><h2 id="setup-title">Data belum dapat dimuat</h2><p>{state.message}</p><code>{state.code}</code></div></section>
       : <><p className="sj-secondary">Data dimuat {reviewDate(state.snapshot.observedAt)} · {state.snapshot.counts.instances} instansi dalam akses Anda</p>
         {canReadReviews ? <div className="control-work-links">
-          <Link className="control-work-card" href="/reviews?group=content&state=IN_REVIEW" prefetch={false}>
+          <Link className="control-work-card" href={"/reviews?group=content&state=IN_REVIEW"} prefetch={false}>
             <h2><ClipboardCheck size={22} aria-hidden="true"/>Pengajuan konten</h2>
             <p className="control-work-count"><strong>{state.snapshot.counts.pendingContent.toLocaleString("id-ID")}</strong>menunggu pemeriksaan</p>
             <span>Buka pemeriksaan<ArrowRight size={18} aria-hidden="true"/></span>
           </Link>
-          <Link className="control-work-card" href="/reviews?group=lifecycle&state=IN_REVIEW" prefetch={false}>
-            <h2><ClipboardCheck size={22} aria-hidden="true"/>Penarikan & perubahan</h2>
+          <Link className="control-work-card" href={"/reviews?group=lifecycle&state=IN_REVIEW"} prefetch={false}>
+            <h2><ClipboardCheck size={22} aria-hidden="true"/>Penarikan &amp; perubahan</h2>
             <p className="control-work-count"><strong>{state.snapshot.counts.pendingLifecycle.toLocaleString("id-ID")}</strong>menunggu pemeriksaan</p>
             <span>Buka permintaan<ArrowRight size={18} aria-hidden="true"/></span>
           </Link>
