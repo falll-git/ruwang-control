@@ -1,5 +1,6 @@
 import { randomUUID } from "node:crypto";
 import { Client } from "pg";
+import { controlDatabaseConnection } from "../src/lib/database-connection.ts";
 
 try { process.loadEnvFile?.(".env.local"); } catch (error) {
   if (error?.code !== "ENOENT") throw error;
@@ -24,8 +25,7 @@ if (decodeURIComponent(parsed.pathname.slice(1)) !== expectedDatabase || decodeU
   throw new Error("Registrasi menolak database atau role di luar Control.");
 }
 
-const client = new Client({ connectionString: migrationUrl,
-  ssl: process.env.CONTROL_DATABASE_SSL === "disable" ? false : { rejectUnauthorized: process.env.CONTROL_DATABASE_SSL === "verify-full" } });
+const client = new Client(controlDatabaseConnection(migrationUrl, process.env.CONTROL_DATABASE_SSL));
 await client.connect();
 try {
   const result = await client.query(`INSERT INTO control.instances

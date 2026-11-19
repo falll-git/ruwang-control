@@ -16,6 +16,8 @@ Keputusan pengguna 3 Oktober 2026 menggantikan pembagian role pada dokumentasi h
 
 Role database PostgreSQL runtime/migration adalah kredensial teknis, bukan pilihan role pengguna. Pemisahan least-privilege database tetap dipertahankan.
 
+Runtime, migrasi, verifikasi database, bootstrap operator, dan registrasi instansi memakai `CONTROL_DATABASE_SSL` yang sama. Jika variabel tidak disetel, default-nya `disable`. Mode `require` memakai TLS tanpa verifikasi sertifikat server. Mode `verify-full` memakai TLS dengan verifikasi sertifikat dan identitas server. Tetapkan mode di variabel tersebut dan singkirkan parameter mode yang bertentangan dari kedua URL database. Untuk CA khusus pada mode `verify-full`, `sslrootcert` pada URL tetap menunjuk ke berkas sertifikat. Parameter TLS ambigu, duplikat, atau tidak valid ditolak sebelum koneksi.
+
 ## API akun
 
 `POST /api/operators`: hanya `{username, displayName, password}`; field role/instansi tambahan ditolak. Role ditentukan server/database. Direktori internal tidak mengembalikan credential atau grant historis. Endpoint lama `POST /api/instances/[instanceId]/operator-grants` dihentikan: sesi+CSRF yang sah menerima 410 `ROLE_MANAGEMENT_REMOVED`, bukan sukses palsu. Revokasi sesi tetap melalui API existing dengan ID instansi terdaftar dan operator target eksplisit.

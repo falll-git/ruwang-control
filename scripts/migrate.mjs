@@ -2,6 +2,7 @@ import { createHash } from "node:crypto";
 import { readdir, readFile } from "node:fs/promises";
 import { resolve } from "node:path";
 import { Client } from "pg";
+import { controlDatabaseConnection, planControlDatabaseConnection } from "../src/lib/database-connection.ts";
 
 try { process.loadEnvFile?.(".env.local"); } catch (error) {
   if (error?.code !== "ENOENT") throw error;
@@ -30,10 +31,10 @@ if (parsed.protocol !== "postgresql:" || parsedRuntime.protocol !== "postgresql:
 }
 const quoteIdentifier = value => `"${value.replaceAll('"', '""')}"`;
 
-const sslMode = process.env.CONTROL_DATABASE_SSL ?? "disable";
+const sslMode = process.env.CONTROL_DATABASE_SSL;
+planControlDatabaseConnection(runtimeUrl, sslMode);
 const client = new Client({
-  connectionString: migrationUrl,
-  ssl: sslMode === "disable" ? false : { rejectUnauthorized: sslMode === "verify-full" },
+  ...controlDatabaseConnection(migrationUrl, sslMode),
   application_name: "ruwang-control-migrator",
 });
 const directory = resolve("migrations");

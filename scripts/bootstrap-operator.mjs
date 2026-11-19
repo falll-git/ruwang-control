@@ -1,4 +1,5 @@
 import { Client } from "pg";
+import { controlDatabaseConnection } from "../src/lib/database-connection.ts";
 import {
   passwordPolicyError,
 } from "../src/server/auth/crypto.ts";
@@ -59,7 +60,7 @@ if (decodeURIComponent(parsedUrl.pathname.slice(1)) !== expectedDatabase || deco
   throw new Error("Bootstrap menolak database atau role di luar konfigurasi migration Control.");
 }
 
-const client = new Client({ connectionString: migrationUrl, ssl: process.env.CONTROL_DATABASE_SSL === "disable" ? false : { rejectUnauthorized: process.env.CONTROL_DATABASE_SSL === "verify-full" } });
+const client = new Client(controlDatabaseConnection(migrationUrl, process.env.CONTROL_DATABASE_SSL));
 await client.connect();
 try {
   const identity = (await client.query("SELECT current_database() AS database, current_user AS role")).rows[0];

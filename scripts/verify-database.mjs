@@ -1,4 +1,5 @@
 import { Client } from "pg";
+import { controlDatabaseConnection } from "../src/lib/database-connection.ts";
 
 try { process.loadEnvFile?.(".env.local"); } catch (error) {
   if (error?.code !== "ENOENT") throw error;
@@ -10,8 +11,7 @@ const expectedRole = process.env.CONTROL_DATABASE_RUNTIME_ROLE;
 if (!url || !expectedDatabase || !expectedRole) throw new Error("Konfigurasi runtime database Control wajib diisi.");
 
 const client = new Client({
-  connectionString: url,
-  ssl: process.env.CONTROL_DATABASE_SSL === "disable" ? false : { rejectUnauthorized: process.env.CONTROL_DATABASE_SSL === "verify-full" },
+  ...controlDatabaseConnection(url, process.env.CONTROL_DATABASE_SSL),
   application_name: "ruwang-control-database-verifier",
 });
 

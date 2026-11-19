@@ -22,6 +22,15 @@ test("runtime configuration accepts only isolated Control database and runtime r
   const result = parseRuntimeConfig(validEnvironment);
   assert.equal(result.CONTROL_DATABASE_NAME, "ruwang_control_test");
   assert.equal(result.CONTROL_ENABLE_BANK_INTEGRATION, false);
+  assert.equal(result.CONTROL_DATABASE_SSL, "disable");
+});
+
+test("runtime configuration rejects a database URL that contradicts verified TLS", () => {
+  assert.throws(() => parseRuntimeConfig({
+    ...validEnvironment,
+    CONTROL_DATABASE_SSL: "verify-full",
+    CONTROL_DATABASE_URL: `${validEnvironment.CONTROL_DATABASE_URL}?sslmode=disable`,
+  }), error => error instanceof ConfigurationError && error.fields.includes("CONTROL_DATABASE_URL"));
 });
 
 test("monitoring membatasi sumber per polling dan mewajibkan key saat diaktifkan", () => {

@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { controlDatabaseSslModes, planControlDatabaseConnection } from "./database-connection.ts";
 
 const booleanFlag = z.enum(["true", "false"]).default("false").transform(value => value === "true");
 const positiveInt = (fallback: number, maximum: number) =>
@@ -13,7 +14,7 @@ export const runtimeEnvSchema = z.object({
   CONTROL_DATABASE_NAME: z.string().regex(/^ruwang_control(?:_[a-z0-9]+)*$/),
   CONTROL_DATABASE_RUNTIME_ROLE: z.string().regex(/^ruwang_control_runtime(?:_[a-z0-9]+)*$/),
   CONTROL_DATABASE_URL: z.string().url().refine(value => value.startsWith("postgresql://"), "wajib URL PostgreSQL"),
-  CONTROL_DATABASE_SSL: z.enum(["disable", "require", "verify-full"]).default("disable"),
+  CONTROL_DATABASE_SSL: z.enum(controlDatabaseSslModes).default("disable"),
   CONTROL_DB_POOL_MAX: positiveInt(5, 20),
   CONTROL_DB_CONNECT_TIMEOUT_MS: positiveInt(3000, 30_000),
   CONTROL_DB_STATEMENT_TIMEOUT_MS: positiveInt(5000, 60_000),
@@ -40,15 +41,20 @@ export const runtimeEnvSchema = z.object({
   CONTROL_ENABLE_GENERAL_MONITORING: z.literal("false").default("false").transform(() => false),
 }).superRefine((value, context) => {
   let databaseName = "";
+  let databaseRole = "";
   try {
-    databaseName = decodeURIComponent(new URL(value.CONTROL_DATABASE_URL).pathname.slice(1));
+    planControlDatabaseConnection(value.CONTROL_DATABASE_URL, value.CONTROL_DATABASE_SSL);
+    const url = new URL(value.CONTROL_DATABASE_URL);
+    databaseName = decodeURIComponent(url.pathname.slice(1));
+    databaseRole = decodeURIComponent(url.username);
   } catch {
+    context.addIssue({ code: "custom", path: ["CONTROL_DATABASE_URL"], message: "URL database atau konfigurasi TLS tidak valid" });
     return;
   }
   if (databaseName !== value.CONTROL_DATABASE_NAME) {
     context.addIssue({ code: "custom", path: ["CONTROL_DATABASE_URL"], message: "nama database tidak sama dengan CONTROL_DATABASE_NAME" });
   }
-  if (decodeURIComponent(new URL(value.CONTROL_DATABASE_URL).username) !== value.CONTROL_DATABASE_RUNTIME_ROLE) {
+  if (databaseRole !== value.CONTROL_DATABASE_RUNTIME_ROLE) {
     context.addIssue({ code: "custom", path: ["CONTROL_DATABASE_URL"], message: "role URL runtime tidak sama dengan CONTROL_DATABASE_RUNTIME_ROLE" });
   }
   if (value.CONTROL_APP_ENV === "production" && !/^[a-f0-9]{40}$/.test(value.CONTROL_RELEASE)) {

@@ -1,4 +1,5 @@
 import { Pool, type PoolClient, type PoolConfig, type QueryResultRow } from "pg";
+import { controlDatabaseConnection } from "@/src/lib/database-connection";
 import { getRuntimeConfig, type RuntimeConfig } from "@/src/lib/env";
 import { DatabaseUnavailableError, SchemaNotReadyError } from "@/src/server/errors";
 
@@ -13,12 +14,8 @@ const REQUIRED_TABLES = [
 type PoolGlobal = typeof globalThis & { __ruwangControlPool?: Pool };
 
 function poolOptions(config: RuntimeConfig): PoolConfig {
-  const ssl = config.CONTROL_DATABASE_SSL === "disable"
-    ? false
-    : { rejectUnauthorized: config.CONTROL_DATABASE_SSL === "verify-full" };
   return {
-    connectionString: config.CONTROL_DATABASE_URL,
-    ssl,
+    ...controlDatabaseConnection(config.CONTROL_DATABASE_URL, config.CONTROL_DATABASE_SSL),
     max: config.CONTROL_DB_POOL_MAX,
     connectionTimeoutMillis: config.CONTROL_DB_CONNECT_TIMEOUT_MS,
     statement_timeout: config.CONTROL_DB_STATEMENT_TIMEOUT_MS,
