@@ -1,10 +1,10 @@
 # Control SJ — panduan aktif
 
-Rekonsiliasi dokumentasi 7 Oktober 2026. Keputusan terbaru ada di [control-simplification.md](control-simplification.md); klasifikasi aktif/arsip ada di [documentation-index.md](documentation-index.md). Dokumen dan hasil tes sebelumnya tidak otomatis membuktikan kandidat terbaru. Hasil lokal bukan izin produksi.
+Rekonsiliasi keputusan produk 7 Oktober 2026; versi dependency dan panduan build diselaraskan dengan source pada 19 November 2026. Keputusan terbaru ada di [control-simplification.md](control-simplification.md); klasifikasi aktif/arsip ada di [documentation-index.md](documentation-index.md). Dokumen dan hasil tes sebelumnya tidak otomatis membuktikan kandidat terbaru. Hasil lokal bukan izin produksi.
 
 ## Kontrak dan workflow
 
-- Next.js 16.3.8, React 19.3.0, PostgreSQL SQL migrations 0001–0016; Control tidak menggunakan Prisma atau Redis sebagai antrean lokal.
+- Next.js 16.4.6, React 19.3.0, Node.js 24+, PostgreSQL SQL migrations 0001–0016. Versi dependency mengikuti [package.json](../package.json) dan [package-lock.json](../package-lock.json); Control tidak menggunakan Prisma atau Redis sebagai antrean lokal.
 - Bank mengelola versi kerja dan menerapkan keputusan. Control memeriksa snapshot immutable dan menyimpan/mengirim keputusan. SJ memiliki ingest, media/proyeksi dan halaman publiknya sendiri.
 - Review state, command state, pengiriman bank dan pemrosesan SJ tidak digabung. Disetujui bukan diterapkan; diterapkan/receipt bukan tampil publik.
 - Profil, kontak, empat kategori publikasi dan lifecycle memakai versi/checksum/identitas/authority yang sah. Revisi dilakukan di bank kemudian diterima sebagai versi baru. Pemeriksa tidak mengedit snapshot bank.
@@ -51,6 +51,14 @@ List tidak fetch detail/media per baris. Numbered page mempunyai count terfilter
 
 Kontrak arah/signature/receipt/binding: [sj-recovery.md](sj-recovery.md), [control-dispatch-recovery.md](control-dispatch-recovery.md), [review-media.md](review-media.md). Instruksi identitas/publik Control yang lebih lama sudah dihentikan dan tidak boleh dipakai sebagai kebijakan aktif.
 
+## Kandidat build dan rilis
+
+Gunakan checkout bersih dari SHA rilis yang sama dengan bukti gate CI. Pasang dependency dari lockfile pada SHA tersebut dengan `npm ci`. [Workflow Quality](../.github/workflows/quality.yml) memakai Node.js 24.13.0 dan npm 11.21.0; cocokkan toolchain serta OS/arsitektur tujuan saat menyiapkan artifact.
+
+`npm run build` menjalankan build Next.js lalu [prepare-standalone.mjs](../scripts/prepare-standalone.mjs), yang menyiapkan `.next/standalone/server.js` beserta aset static/public. `npm start` memakai [start-standalone.mjs](../scripts/start-standalone.mjs). Artifact harus dibangun ulang dari SHA yang diuji; keberadaan `.next` atau `node_modules` lokal lama tidak membuktikan artifact kandidat sudah sesuai.
+
+Sebelum aktivasi yang diizinkan, cocokkan konfigurasi proses tujuan dengan [schema environment](../src/lib/env.ts): mode production, `CONTROL_RELEASE` berupa SHA rilis, origin HTTPS, identitas/role database, mode TLS dan sertifikat, serta key/binding integrasi yang diaktifkan. Credential tetap berada pada konfigurasi privat tujuan. Schema dan privilege database, backup/restore, reverse proxy, health/readiness dan prosedur rollback perlu bukti pada target VPS. Kelulusan build/CI belum membuktikan kondisi tersebut dan tidak memberi izin menjalankan migrasi atau aktivasi produksi.
+
 ## Komponen, tes dan layanan
 
 Gunakan komponen Arsip yang dipindahkan dengan token Control dan sumber/lisensi yang dicatat. Badge shadcn/ui Radix bersumber MIT; tidak menambah dependency. Tidak ada Bantuan pengelola, wizard, timeline atau tooltip penampung penjelasan tersembunyi. Informasi rutin netral singkat; error penting tetap terlihat.
@@ -59,6 +67,6 @@ Dialog native memakai Tab trap/Escape/fokus kembali/scroll lock. Uji perilaku ak
 
 Preview Control hanya http://127.0.0.1:4320, tidak beralih port bila terpakai. Verifikasi source/build manifest dan pemilik proses sebelum restart. Database/double/worker pendukung dicatat terpisah. Resource tes harus run-owned dengan marker/container ID/image/mount/role/URL proof, bukan hanya nama tes. Fresh/upgrade dan alur positif melalui API/service resmi. SQL fixture hanya provisioning akun/registry/audit canary, bukan status bisnis untuk meloloskan skenario.
 
-npm test mencakup dua integrasi nyata peer. Pada pekerjaan 5 Oktober, izin penyesuaian harness bank dibatasi pada sj-cross-app-peer.mjs dan sj-cross-app-scenario.js, tanpa mengubah aplikasi bank/SJ dalam pekerjaan tersebut. Catatan ini bukan izin lintas repository untuk tugas berikutnya. Test double, service lintas aplikasi dan browser tetap jenis bukti berbeda. Hosted CI/push/deploy/VPS tidak diizinkan.
+npm test mencakup dua integrasi nyata peer. Pada pekerjaan 5 Oktober, izin penyesuaian harness bank dibatasi pada sj-cross-app-peer.mjs dan sj-cross-app-scenario.js, tanpa mengubah aplikasi bank/SJ dalam pekerjaan tersebut. Catatan ini bukan izin lintas repository untuk tugas berikutnya. Test double, service lintas aplikasi dan browser tetap jenis bukti berbeda. Izin hosted CI, commit/push, deploy dan akses VPS mengikuti instruksi pengguna untuk pekerjaan yang sedang berjalan; keberhasilan tes saja tidak memberi izin tahap berikutnya.
 
 Bukti pekerjaan 5 Oktober: workspace audit output/playwright/control-simplification-20261005 di luar kandidat, bukan bukti pengujian ulang 7 Oktober. PASS harus merujuk run/kandidat yang sama; FAIL awal tetap disimpan. Cleanup exact resource, jangan docker prune/kill semua node atau reset database. Sesudah disconnect, periksa checkpoint, manifest, process/listener dan owner journal sebelum mengulang.

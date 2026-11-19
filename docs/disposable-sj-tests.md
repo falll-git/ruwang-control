@@ -7,9 +7,9 @@ Prasyarat yang tidak tersedia menghasilkan FAIL, bukan PASS/SKIP.
 ## Prasyarat dan isolasi
 
 - Checkout bank berada di sibling `../backend-production`, beserta dependency terpasang.
-- Harness lintas aplikasi bank saat ini memakai checkout Control/SJ pada drive D
-  yang diperiksa di source harness. Ini runner integrasi workspace lokal, bukan
-  runner portable atau bukti deployment.
+- Resolver peer bank memakai checkout sibling `ruwang-control`, `seputarjaminan-production` dan `frontend-production`, dengan validasi identitas package; tidak mengunci drive D.
+  Kontrak ini sudah dijalankan di runner Linux oleh [workflow Quality](../.github/workflows/quality.yml).
+  Kelulusan tetap merujuk SHA yang diuji; portabilitas path tidak membuktikan kesiapan Docker/resource milik run atau deployment.
 - Docker lokal dan scanner ClamAV dengan marker yang diverifikasi oleh
   `backend-production/scripts/run-sj-isolated-tests.js` harus siap.
 - Launcher tidak memuat .env/.env.local, tidak menerima URL database/Redis/storage
